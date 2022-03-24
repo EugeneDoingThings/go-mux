@@ -1,0 +1,21 @@
+version: '3.1'
+
+networks:
+  postgres:
+    driver: bridge
+
+services:
+  db:
+    image: postgres
+    env_file: .env.example
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-1q2w3e4r}
+      PGDATA: /data/postgres
+    volumes:
+      - ./docker-data/users_db:/data/postgres
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
